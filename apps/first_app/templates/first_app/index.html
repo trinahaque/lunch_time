@@ -4,9 +4,21 @@
 </head>
 <body>
   <h1>Lunch Time </h1>
+  <h2> Let us know who you are </h2>
+  <form action='/success' method='POST'>
+    {% csrf_token %}
+    {% if users %}
+    <select class="userSelect" onchange="this.form.submit()">
+      {% for user in users %}
+      <option>{{ user.first_name|title }}  {{ user.last_name|title }}</option>
+      {% endfor %}
+    </select>
+    {% endif %}
+  </form>
+
   <form action='/registration' method='POST'>
     {% csrf_token %}
-    <h3> Let us know who you are </h3>
+    <h4> First time? Please add yourself </h4>
     First Name: <input type="text" name='first_name'><br>
     Last Name: <input type="text" name='last_name'><br><br>
     <input type="submit" value='Submit'>

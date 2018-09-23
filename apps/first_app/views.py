@@ -4,9 +4,13 @@ from .models import User
 
 
 def index(request):
-    if 'first_name' in request.session:
-        return redirect('/success')
-    return render(request, "first_app/index.html")
+    # get all the users
+    users = User.objects.all()
+    print "users", users
+    context = {
+        "users": users
+    }
+    return render(request, "first_app/index.html", context)
 
 def success(request):
     return render(request, "first_app/success.html")
@@ -18,8 +22,10 @@ def registration(request):
             for error in result[1]:
                 messages.add_message(request, messages.INFO, error)
         else:
-            # messages.success(request, 'Registration successful')
-            return redirect("/success")
+            context = {
+                "user": result[1]
+            }
+            return render(request, "first_app/success.html", context)
     return redirect("/")
 
 
