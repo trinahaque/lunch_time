@@ -5,11 +5,18 @@
     <title></title>
   </head>
   <body>
-    <p>Hello!!</p>
-    {{ user.first_name }}
-    <form action='/logout' method='POST'>
-      {% csrf_token %}
-       <input type="submit" value='Log Out'>
-     </form>
+    <p>Hello {{ request.session.first_name }}!!</p>
+      <form action='/coffee' method='POST'>
+        {% csrf_token %}
+        <input type="submit" value='Coffee'>
+      </form><br>
+      <form action='/lunch' method='POST'>
+        {% csrf_token %}
+        <input type="submit" value='Lunch'>
+      </form><br>
+      <form action='/resetUser' method='POST'>
+        {% csrf_token %}
+        <input type="submit" value='Reset User'>
+      </form><br>
   </body>
 </html>

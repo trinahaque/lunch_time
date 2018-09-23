@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import User
+import ast
 
 
 def index(request):
     # get all the users
     users = User.objects.all()
-    print "users", users
+    # print "users", users
     context = {
         "users": users
     }
@@ -15,6 +16,14 @@ def index(request):
 def success(request):
     return render(request, "first_app/success.html")
 
+def successId(request):
+    if request.method == "POST":
+        userID = request.POST['userList']
+        user = User.objects.get(id=userID)
+        request.session['first_name'] = user.first_name
+        return redirect('/success')
+    return redirect('/')
+
 def registration(request):
     if request.method == "POST":
         result = User.objects.registration(request)
@@ -22,10 +31,24 @@ def registration(request):
             for error in result[1]:
                 messages.add_message(request, messages.INFO, error)
         else:
-            context = {
-                "user": result[1]
-            }
-            return render(request, "first_app/success.html", context)
+            user = User.objects.get(id=result[1].id)
+            request.session['first_name'] = user.first_name
+            return redirect("/success")
     return redirect("/")
 
+def getCoffee(request):
+    if "id" in request.session:
+        return redirect('/success')
+    return redirect('/')
+
+def getLunch(request):
+    if "id" in request.session:
+        return redirect('/success')
+    return redirect('/')
+
+def resetUser(request):
+    if 'first_name' in request.session:
+        request.session.pop('first_name')
+        request.session.pop('id')
+    return redirect("/")
 

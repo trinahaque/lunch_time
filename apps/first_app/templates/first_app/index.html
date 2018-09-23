@@ -5,17 +5,18 @@
 <body>
   <h1>Lunch Time </h1>
   <h2> Let us know who you are </h2>
-  <form action='/success' method='POST'>
-    {% csrf_token %}
-    {% if users %}
-    <select class="userSelect" onchange="this.form.submit()">
-      {% for user in users %}
-      <option>{{ user.first_name|title }}  {{ user.last_name|title }}</option>
-      {% endfor %}
-    </select>
-    {% endif %}
+  <form action="/successId" method="POST">
+      {% csrf_token %}
+      {% if users %}
+      <select name="userList">
+        {% for user in users %}
+          <option value="{{user.id}}">{{ user.first_name|title }}  {{ user.last_name|title }}</option>
+        {% endfor %}
+      </select>
+     {% endif %}
+     <button type="submit">Submit</button>
   </form>
-
+    
   <form action='/registration' method='POST'>
     {% csrf_token %}
     <h4> First time? Please add yourself </h4>
@@ -27,7 +28,7 @@
   {% if messages %}
   <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags}}" {% endif %}>{{ message }}
+    <li {% if message.tags %} class="{{ message.tags}}" {% endif %}>{{ message }}
   </li>
     {% endfor %}
   </ul>
