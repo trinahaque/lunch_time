@@ -9,9 +9,7 @@ def index(request):
     return render(request, "first_app/index.html")
 
 def success(request):
-    if 'first_name' in request.session:
-        return render(request, "first_app/success.html")
-    return redirect('/')
+    return render(request, "first_app/success.html")
 
 def registration(request):
     if request.method == "POST":
@@ -20,23 +18,8 @@ def registration(request):
             for error in result[1]:
                 messages.add_message(request, messages.INFO, error)
         else:
-            messages.success(request, 'Registration successful')
+            # messages.success(request, 'Registration successful')
+            return redirect("/success")
     return redirect("/")
 
 
-def login(request):
-    if request.method == "POST":
-        result = User.objects.login(request)
-        if result[0] == False:
-            for error in result[1]:
-                messages.add_message(request, messages.INFO, error)
-        else:
-            request.session['first_name']= result[1].first_name
-            return redirect('/success')
-    return redirect("/")
-
-
-def logout(request):
-    if 'first_name' in request.session:
-        request.session.pop('first_name')
-    return redirect('/')
