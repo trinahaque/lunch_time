@@ -9,6 +9,7 @@
       <form action='/getCoffee/{{request.session.id}}' method='GET'>
         <input type="submit" value='Coffee'>
       </form><br>
+      {{request.session.coffee_friend_first_name}} {{request.session.coffee_friend_last_name}}
       <form action='/lunch' method='POST'>
         {% csrf_token %}
         <input type="submit" value='Lunch'>

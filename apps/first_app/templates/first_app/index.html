@@ -13,8 +13,8 @@
           <option value="{{user.id}}">{{ user.first_name|title }}  {{ user.last_name|title }}</option>
         {% endfor %}
       </select>
+      <button type="submit">Submit</button>
      {% endif %}
-     <button type="submit">Submit</button>
   </form>
     
   <form action='/registration' method='POST'>

@@ -40,8 +40,11 @@ def registration(request):
 
 def getCoffee(request, pid):
     if "id" in request.session:
-        coffeeFriends = User.objects.getCoffee(pid)
-        print "coffeeFriend", coffeeFriends[1]
+        coffeeFriendId = User.objects.getCoffee(pid)
+        # print "coffeeFriend", coffeeFriend[1]
+        coffeeFriend = User.objects.get(id=coffeeFriendId[1])
+        request.session['coffee_friend_first_name'] = coffeeFriend.first_name
+        request.session['coffee_friend_last_name'] = coffeeFriend.last_name
         return redirect('/success')
     return redirect("/")
 
