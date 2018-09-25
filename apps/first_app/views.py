@@ -21,6 +21,7 @@ def successId(request):
         userID = request.POST['userList']
         user = User.objects.get(id=userID)
         request.session['first_name'] = user.first_name
+        request.session['id'] = user.id
         return redirect('/success')
     return redirect('/')
 
@@ -33,13 +34,16 @@ def registration(request):
         else:
             user = User.objects.get(id=result[1].id)
             request.session['first_name'] = user.first_name
+            request.session['id'] = user.id
             return redirect("/success")
     return redirect("/")
 
-def getCoffee(request):
+def getCoffee(request, pid):
     if "id" in request.session:
+        coffeeFriends = User.objects.getCoffee(pid)
+        print "coffeeFriend", coffeeFriends[1]
         return redirect('/success')
-    return redirect('/')
+    return redirect("/")
 
 def getLunch(request):
     if "id" in request.session:
