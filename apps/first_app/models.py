@@ -31,8 +31,8 @@ class UserManager(models.Manager):
         # print "friendlist", friendList
         
         # retrieve all the friends met before
-        oldCoffeeFriends = user.coffee_friends
-        # print "old", oldCoffeeFriends
+        oldCoffeeFriends = user.coffee_friends.all()
+        print "old", oldCoffeeFriends
         
         error = []
         if len(userList) < 1:
@@ -68,6 +68,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now=True)
+    # coffee_friends = models.ForeignKey('self', default=None)
     coffee_friends = models.ManyToManyField('self')
     lunch_friends = models.ManyToManyField('self')
     objects = UserManager()
