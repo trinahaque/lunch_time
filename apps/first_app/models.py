@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
-import re, bcrypt
+import re
 import random
 from datetime import datetime, date
 Email_Regex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
