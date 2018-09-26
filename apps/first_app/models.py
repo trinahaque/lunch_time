@@ -25,42 +25,57 @@ class UserManager(models.Manager):
     def getCoffee(self, pid):
         # retrieve the user in session
         user = User.objects.get(id=pid)
+        # print "userId", user.id
         
-        # query excludes the user itself 
+        # receive a list of all users excluding the user itself 
         userList = User.objects.exclude(id=pid)
-        # print "friendlist", friendList
-        
-        # retrieve all the friends met before
+        # print "userList", userList
+
+        # retrieve all the friends met for coffee before
+        # this is not working
         oldCoffeeFriends = user.coffee_friends.all()
-        print "old", oldCoffeeFriends
-        
+        # print "user before", user.id
+        # print "coffee friend", user.coffee_friends
+        # print "all coffee", oldCoffeeFriends
+        # for each in oldCoffeeFriends:
+        #     print "old", each.first_name
+
+        # remove old coffee friends from the friends list to 
+        # find a list of new friends
+        newFriendsList = []
+
+        for nonFriend in userList:
+            valid = True
+            for friend in oldCoffeeFriends:
+                if (nonFriend.id == friend.id):
+                    valid = False
+                    break
+            if valid:
+                newFriendsList.append(nonFriend)
+        # print "new friends", newFriendsList
+        # for friend in newFriendsList:
+        #     print "newFriendList", friend.first_name
+
         error = []
-        if len(userList) < 1:
-            error.append("Please wait for other to join")
+        if len(newFriendsList) < 1:
+            error.append("You have met with everyone for coffee. Please get lunch this time")
             return (False, error)
         else: 
-            nonFriends = []
-            for user in userList:
-                print user.id
-                for friend in oldCoffeeFriends.all():
-                    # print "friend", friend
-                    if friend.id == user.id:
-                        break
-                nonFriends.append(user.id)
-        
-        myCoffeeFriendId = random.choice(nonFriends)
-        # print "coffeefriend", myCoffeeFriendId
+            newCoffeeFriend = random.choice(newFriendsList)
+            print "coffeeFriendId", newCoffeeFriend.first_name
+            # before = user.coffee_friends.all()
+            # for friend in before:
+            #     print "before", friend.first_name
+            user.coffee_friends.add(newCoffeeFriend)
+            # print "user after", user.id
+            after = user.coffee_friends.all()
+            # print "afterr", after
+            # for newFriend in after:
+            #     print "after", newFriend.first_name
+            # print "length", len(after)
+            # if the user has had coffee with everyone
+            return (True, newCoffeeFriend.id)
 
-        # add the new colleague to the coffee friends
-        myCoffeeFriend = User.objects.get(id=myCoffeeFriendId)
-        user.coffee_friends.add(myCoffeeFriend)
-
-        # still getting the same user twice
-        return (True, myCoffeeFriendId)
-
-class CoffeeFriendManager(models.Manager):
-    def getCof(self):
-        pass
 
 # schema for a new user
 class User(models.Model):
@@ -68,7 +83,6 @@ class User(models.Model):
     last_name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now=True)
-    # coffee_friends = models.ForeignKey('self', default=None)
     coffee_friends = models.ManyToManyField('self')
     lunch_friends = models.ManyToManyField('self')
     objects = UserManager()

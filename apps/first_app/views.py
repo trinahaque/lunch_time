@@ -38,13 +38,17 @@ def registration(request):
             return redirect("/success")
     return redirect("/")
 
-def getCoffee(request, pid):
+def getCoffee(request):
     if "id" in request.session:
-        coffeeFriendId = User.objects.getCoffee(pid)
-        # print "coffeeFriend", coffeeFriend[1]
-        coffeeFriend = User.objects.get(id=coffeeFriendId[1])
-        request.session['coffee_friend_first_name'] = coffeeFriend.first_name
-        request.session['coffee_friend_last_name'] = coffeeFriend.last_name
+        userList = User.objects.exclude(id=request.session['id'])
+        if (len(userList) < 1):
+            request.session['message'] = "Wait for others to join the system"
+        else:
+            newCoffeeFriend = User.objects.getCoffee(request.session['id'])
+            if newCoffeeFriend[0] == True:
+                coffeeFriend = User.objects.get(id=newCoffeeFriend[1])
+                request.session['coffee_friend_first_name'] = coffeeFriend.first_name
+                request.session['coffee_friend_last_name'] = coffeeFriend.last_name
         return redirect('/success')
     return redirect("/")
 

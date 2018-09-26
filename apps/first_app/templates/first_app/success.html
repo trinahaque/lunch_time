@@ -6,9 +6,10 @@
   </head>
   <body>
     <p>Hello {{ request.session.first_name| title }}!!</p>
-      <form action='/getCoffee/{{request.session.id}}' method='GET'>
+      <form action='/getCoffee' method='GET'>
         <input type="submit" value='Coffee'>
       </form><br>
+      {{request.session.message}}
       {{request.session.coffee_friend_first_name}} {{request.session.coffee_friend_last_name}}
       <form action='/lunch' method='POST'>
         {% csrf_token %}
