@@ -6,6 +6,7 @@ from datetime import datetime, date
 Email_Regex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 class UserManager(models.Manager):
+    # registrations takes the input from the views and creates a new user
     def registration(self, request):
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
@@ -22,6 +23,8 @@ class UserManager(models.Manager):
             return (True, user)
         return (False, errors)
 
+    # getCoffee takes input from getCoffee function in views and 
+    # generates random colleague for coffee
     def getCoffee(self, pid):
         # retrieve the user in session
         user = User.objects.get(id=pid)
@@ -32,7 +35,6 @@ class UserManager(models.Manager):
         # print "userList", userList
 
         # retrieve all the friends met for coffee before
-        # this is not working
         oldCoffeeFriends = user.coffee_friends.all()
         # print "user before", user.id
         # print "coffee friend", user.coffee_friends
@@ -53,29 +55,53 @@ class UserManager(models.Manager):
             if valid:
                 newFriendsList.append(nonFriend)
         # print "new friends", newFriendsList
-        # for friend in newFriendsList:
-        #     print "newFriendList", friend.first_name
-
+        
         error = []
         if len(newFriendsList) < 1:
             error.append("You have met with everyone for coffee. Please get lunch this time")
             return (False, error)
         else: 
             newCoffeeFriend = random.choice(newFriendsList)
-            print "coffeeFriendId", newCoffeeFriend.first_name
-            # before = user.coffee_friends.all()
-            # for friend in before:
-            #     print "before", friend.first_name
+            # print "coffeeFriendId", newCoffeeFriend.first_name
+          
             user.coffee_friends.add(newCoffeeFriend)
-            # print "user after", user.id
-            after = user.coffee_friends.all()
-            # print "afterr", after
-            # for newFriend in after:
-            #     print "after", newFriend.first_name
-            # print "length", len(after)
-            # if the user has had coffee with everyone
+           
             return (True, newCoffeeFriend.id)
 
+    def getLunch(self, pid, min_friend_number, max_friend_number):
+        min_friend_number = min_friend_number
+        max_friend_number = max_friend_number
+        user = User.objects.get(id=pid)
+        userList = User.objects.exclude(id=pid)
+       
+        oldLunchFriends = user.lunch_friends.all()
+    
+        newFriendsList = []
+
+        for nonFriend in userList:
+            valid = True
+            for friend in oldLunchFriends:
+                if (nonFriend.id == friend.id):
+                    valid = False
+                    break
+            if valid:
+                newFriendsList.append(nonFriend)
+        
+        # nonFriendsList provides a list of users not met before for lunch
+        error = []
+        # if the number of friends not met for lunch is less than 3, try to generate friends
+        # from friends already met before
+        if len(newFriendsList) < min_friend_number:
+            old_friends_needed = min_friend_number - len(newFriendsList)
+            
+            if (old_friends_needed) < 1:
+                # generate random colleagues
+            
+            # user.lunch_friends.add(newLunchFriend)
+            
+            # after = user.lunch_friends.all()
+                return (True, newLunchFriensList)
+        return (False, error)
 
 # schema for a new user
 class User(models.Model):

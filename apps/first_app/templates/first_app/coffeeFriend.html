@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+      <p>
+        Your coffee friend is: 
+        {{coffee_friend.first_name|title }} {{coffee_friend.last_name|title }}
+      </p>
+      
+      <form action='/resetUser' method='POST'>
+        {% csrf_token %}
+        <input type="submit" value='Reset User'>
+      </form><br>
+  </body>
+</html>

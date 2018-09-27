@@ -6,15 +6,14 @@
   </head>
   <body>
     <p>Hello {{ request.session.first_name| title }}!!</p>
-      <form action='/getCoffee' method='GET'>
+      <a href='/getCoffee'>
         <input type="submit" value='Coffee'>
-      </form><br>
-      {{request.session.message}}
-      {{request.session.coffee_friend_first_name}} {{request.session.coffee_friend_last_name}}
-      <form action='/lunch' method='POST'>
-        {% csrf_token %}
+      </a><br>
+     <!-- <p> {{request.session.message}} </p> -->
+      <a href='/getLunch'>
         <input type="submit" value='Lunch'>
-      </form><br>
+      </a><br><br>
+
       <form action='/resetUser' method='POST'>
         {% csrf_token %}
         <input type="submit" value='Reset User'>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+      <p>
+        Your lunch friends are: 
+      </p>
+        {% if lunch_friends %}
+            {% for lunch_friend in lunch_friends %}
+            <p>{{ lunch_friend.first_name|title }}  {{ lunch_friend.last_name|title }}</p>
+            {% endfor %}
+        {% endif %}
+      
+        <form action='/resetUser' method='POST'>
+        {% csrf_token %}
+        <input type="submit" value='Reset User'>
+      </form><br>
+  </body>
+</html>
