@@ -1,4 +1,7 @@
 # lunch_time
+This application allows a user to find random colleague to get coffee and lunch
+
+This project is run on Django version 1.11.15 and Python2.7. Below are instructions on how to run the project:
 1. Create a folder to install Django environment
 2. Navigate to the folder
 3. Follow the instructions to install Django:
