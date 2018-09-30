@@ -6,13 +6,14 @@
   </head>
   <body>
     <p>Hello {{ request.session.first_name| title }}!!</p>
-      <a href='/getCoffee'>
-        <input type="submit" value='Coffee'>
-      </a><br>
-     <!-- <p> {{request.session.message}} </p> -->
-      <a href='/getLunch'>
-        <input type="submit" value='Lunch'>
-      </a><br><br>
+      <p>
+          <a href='/getCoffee'>
+            <input type="submit" value='Coffee'>
+          </a>&nbsp;
+          <a href='/getLunch'>
+            <input type="submit" value='Lunch'>
+          </a>
+      </p>
 
       <form action='/resetUser' method='POST'>
         {% csrf_token %}

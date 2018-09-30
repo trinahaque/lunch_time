@@ -25,6 +25,7 @@ def successId(request):
         userID = request.POST['userList']
         user = User.objects.get(id=userID)
         request.session['first_name'] = user.first_name
+        request.session['last_name'] = user.last_name
         request.session['id'] = user.id
         return redirect('/success')
     return redirect('/')
@@ -39,6 +40,7 @@ def registration(request):
         else:
             user = User.objects.get(id=result[1].id)
             request.session['first_name'] = user.first_name
+            request.session['last_name'] = user.last_name
             request.session['id'] = user.id
             return redirect("/success")
     return redirect("/")
@@ -65,20 +67,17 @@ def getCoffee(request):
 # this function generates 3-5 colleague for lunch
 def getLunch(request):
     if "id" in request.session:
-        min_friend_number = 3
-        max_friend_number = 5
-        userList = User.objects.exclude(id=request.session['id'])
-        if (len(userList) < 1):
-            request.session['message'] = "Wait for others to join the system"
+        min_friend_number = 2
+        max_friend_number = 4
+        lunchFriends = User.objects.getLunch(request.session['id'], min_friend_number, max_friend_number)
+        if lunchFriends[0] == False:
+            message = lunchFriends[1]
         else:
-            # should return multiple friends
-            newLunchFriends = User.objects.getLunch(request.session['id'], min_friend_number, max_friend_number)
-            # if newLunchFriends[0] == True:
-            #     newLunchFriends = User.objects.get(id=newLunchFriends[1])
-            #     context = {
-            #         "lunch_friends": newLunchFriends
-            #     }
-            #     return render(request, "first_app/lunchFriends.html", context)
+            print "views", lunchFriends[1]
+            context = {
+                "lunch_friends": lunchFriends[1]
+            }
+            return render(request, "first_app/lunchFriends.html", context)
         return redirect('/success')
     return redirect("/")
 

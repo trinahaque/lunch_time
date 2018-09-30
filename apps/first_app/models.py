@@ -73,36 +73,82 @@ class UserManager(models.Manager):
         max_friend_number = max_friend_number
         user = User.objects.get(id=pid)
         userList = User.objects.exclude(id=pid)
-       
+        lunchFriends = []
+        errors = []
+
         oldLunchFriends = user.lunch_friends.all()
-    
-        newFriendsList = []
+        friends_to_exclude = [friend.id for friend in oldLunchFriends]
+        # newFriendsList provides list of all the friends not met for lunch before
+        newFriendsList = User.objects.exclude(id__in=friends_to_exclude).exclude(id=pid)
+        # print "newFriendsList", newFriendsList
 
-        for nonFriend in userList:
-            valid = True
-            for friend in oldLunchFriends:
-                if (nonFriend.id == friend.id):
-                    valid = False
-                    break
-            if valid:
-                newFriendsList.append(nonFriend)
+        # generates a number between 2 and 4 inclusive
+        count_of_friends = random.randint(min_friend_number, max_friend_number) 
+
+        # if the system is new and the current user is the only user in the list
+        # ask user to wait
+        if len(userList) < 1:
+            errors.append("You are the only one in the system. Please wait for others to join.")
+            print "1", errors[0]
+            return (False, errors)
         
-        # nonFriendsList provides a list of users not met before for lunch
-        error = []
-        # if the number of friends not met for lunch is less than 3, try to generate friends
-        # from friends already met before
-        if len(newFriendsList) < min_friend_number:
-            old_friends_needed = min_friend_number - len(newFriendsList)
+        # if application only has 3 or 2 users, lunch group will have all the users in the system
+        elif len(userList) < 3:
+            for each_friend in userList:
+                lunchFriends.append(each_friend)
+            self.addLunchFriend(user, lunchFriends)
+            print "2", lunchFriends
+            # for new_friend in lunchFriends:
+            #     print "2", new_friend.first_name
+        
+        # userList is greater than 3 or higher
+        else:
+            # when the number of newFriendsList is less than 2, add all the newFriendsList to 
+            # lunchFriends, find the rest from old friends
+            if len(newFriendsList) < 2:
+                # lunchFriends = newFriendsList
+                for each_friend in newFriendsList:
+                    lunchFriends.append(each_friend)
+                number_of_friends_needed = count_of_friends - len(lunchFriends)
+                # print "needed", number_of_friends_needed
+                oldFriends = random.sample(oldLunchFriends, number_of_friends_needed)
+                lunchFriends += oldFriends
+                print "3", lunchFriends
+                # print "3 lunch", lunchFriends
+                # print "old", oldFriends
+                self.addLunchFriend(user, newFriendsList)
+                # for new_friend in lunchFriends:
+                #     print "3", new_friend.first_name
             
-            if (old_friends_needed) < 1:
-                # generate random colleagues
-            
-            # user.lunch_friends.add(newLunchFriend)
-            
-            # after = user.lunch_friends.all()
-                return (True, newLunchFriensList)
-        return (False, error)
+            # if the new friends are between 2 and 4, assign all of them to lunchFriends
+            elif len(newFriendsList) >= min_friend_number and len(newFriendsList) <= max_friend_number:
+                for each_friend in newFriendsList:
+                    lunchFriends.append(each_friend)
+                print "4", lunchFriends
+                self.addLunchFriend(user, newFriendsList)
+                # for new_friend in lunchFriends:
+                #     print "4", new_friend.first_name
+           
+            # if the new friends are over 4
+            else:
+                lunchFriends = random.sample(newFriendsList, count_of_friends)
+                print "5", lunchFriends
+                self.addLunchFriend(user, lunchFriends)
+                # for new_friend in lunchFriends:
+                #     print "5", new_friend.first_name
+        return (True, lunchFriends)
 
+    # this function takes the user in session and friends list (called newFriendsList in the 
+    # parameter) who are getting lunch with user this time. The fuctions adds those friends
+    # to the database that keeps track of friends met with users for lunch
+    def addLunchFriend(self, user, newFriendsList):
+        if len(newFriendsList) > 0:
+            for newFriend in newFriendsList:
+                user.lunch_friends.add(newFriend)
+            return True
+        return False
+
+        
 # schema for a new user
 class User(models.Model):
     first_name = models.CharField(max_length=255)

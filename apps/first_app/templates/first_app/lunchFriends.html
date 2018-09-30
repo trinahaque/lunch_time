@@ -6,8 +6,9 @@
   </head>
   <body>
       <p>
-        Your lunch friends are: 
+        Your lunch group has: 
       </p>
+        <p>{{request.session.first_name|title}}  {{request.session.last_name|title }}</p>
         {% if lunch_friends %}
             {% for lunch_friend in lunch_friends %}
             <p>{{ lunch_friend.first_name|title }}  {{ lunch_friend.last_name|title }}</p>
