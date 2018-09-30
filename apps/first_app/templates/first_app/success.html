@@ -6,18 +6,26 @@
   </head>
   <body>
     <p>Hello {{ request.session.first_name| title }}!!</p>
-      <p>
-          <a href='/getCoffee'>
-            <input type="submit" value='Coffee'>
-          </a>&nbsp;
-          <a href='/getLunch'>
-            <input type="submit" value='Lunch'>
-          </a>
-      </p>
+    <p>
+        <a href='/getCoffee'>
+          <input type="submit" value='Coffee'>
+        </a>&nbsp;
+        <a href='/getLunch'>
+          <input type="submit" value='Lunch'>
+        </a>
+    </p>
 
-      <form action='/resetUser' method='POST'>
-        {% csrf_token %}
-        <input type="submit" value='Reset User'>
-      </form><br>
+    <form action='/resetUser' method='POST'>
+      {% csrf_token %}
+      <input type="submit" value='Reset User'>
+    </form><br>
+    
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <p {% if message.tags %} class="{{ message.tags}}" {% endif %}>{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
   </body>
 </html>

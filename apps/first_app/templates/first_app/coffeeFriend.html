@@ -9,6 +9,14 @@
         Your coffee friend is: 
         {{coffee_friend.first_name|title }} {{coffee_friend.last_name|title }}
       </p>
+      <p>
+        <a href='/getCoffee'>
+          <input type="submit" value='Coffee'>
+        </a>&nbsp;
+        <a href='/getLunch'>
+          <input type="submit" value='Lunch'>
+        </a>
+      </p>
       
       <form action='/resetUser' method='POST'>
         {% csrf_token %}
