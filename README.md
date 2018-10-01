@@ -17,3 +17,7 @@ The correct location will look something like this:
 README.md	apps		db.sqlite3	manage.py	registration
 ```
 7. Run this command in the terminal: ```python2.7 manage.py runserver```
+
+
+Python 2.7 Installation
+If Python 2.7 is not installed in the machine, it can be downloaded from here: https://www.python.org/downloads/
