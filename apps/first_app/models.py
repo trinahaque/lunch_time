@@ -33,7 +33,7 @@ class UserManager(models.Manager):
         user = User.objects.get(id=pid)
        
         # receive a list of all users excluding the current user
-        userList = User.objects.exclude(id=pid)
+        # userList = User.objects.exclude(id=pid)
         
         # retrieve all the friends met for coffee before
         oldCoffeeFriends = user.coffee_friends.all()
