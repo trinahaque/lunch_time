@@ -4,7 +4,7 @@ This application allows a user to find random colleague to get coffee and lunch
 ### Assumtions/Approach
 1. Lunch friends have no relations with coffee friends in the database.
 2. If the system has only 1 user, the app will ask the user to wait when the user tries to find someone to get coffee or lunch.
-3. If the system has only 2 users, the user will have a lunch group of 2 people. All the other times, the lunch group will be between 3-5 people.
+3. If the system has only 2 users, the user will have a lunch group of 2 people in order to prevent user to eat alone. All the other times, the lunch group will be between 3-5 people.
 4. When the user has met with everyone for coffee, the application will ask user to get lunch instead.
 5. User can get coffee with only one person.
 6. User will be able to find a group for lunch even after having met everyone for lunch before.
