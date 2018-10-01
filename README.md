@@ -26,6 +26,7 @@ The correct location will look something like this:
 README.md	apps		db.sqlite3	manage.py	registration
 ```
 7. Run this command in the terminal: ```python2.7 manage.py runserver```
+8 Type in ```http://localhost:8000``` in the browser
 
 
 ### Python 2.7 Installation
