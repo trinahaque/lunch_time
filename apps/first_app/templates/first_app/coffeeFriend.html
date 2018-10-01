@@ -5,8 +5,9 @@
     <title></title>
   </head>
   <body>
+      <h3>Hello {{request.session.first_name}}!!</h3>
       <p>
-        Your coffee friend is: 
+        Get coffee with: 
         {{coffee_friend.first_name|title }} {{coffee_friend.last_name|title }}
       </p>
       <p>

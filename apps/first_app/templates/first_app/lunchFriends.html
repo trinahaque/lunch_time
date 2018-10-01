@@ -5,10 +5,11 @@
     <title></title>
   </head>
   <body>
+      <h2>Lunch time!</h2>
       <p>
         Your lunch group has: 
       </p>
-        <p>{{request.session.first_name|title}}  {{request.session.last_name|title }}</p>
+        <p>{{request.session.first_name|title}}  {{request.session.last_name|title }} (you)</p>
         {% if lunch_friends %}
             {% for lunch_friend in lunch_friends %}
             <p>{{ lunch_friend.first_name|title }}  {{ lunch_friend.last_name|title }}</p>
